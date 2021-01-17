@@ -30,7 +30,7 @@ const App = () => {
       {!isLoading ? (
         users.map((user) => <Account key={user.username} user={user} />)
       ) : (
-        <h3>Fetching users...</h3>
+        <h3>Fetching Users...</h3>
       )}
     </React.Fragment>
   );
