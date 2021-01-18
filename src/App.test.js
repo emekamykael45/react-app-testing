@@ -1,72 +1,42 @@
 import React from "react";
-import { shallow, mount } from "enzyme";
-import Account from "./Account";
+import { mount } from "enzyme";
 import App from "./App";
-import toJson from "enzyme-to-json";
+// import toJson from "enzyme-to-json";
 
-// it("renders correctly", () => {
-//   const wrapper = mount(<App />);
-//   expect(wrapper.state("error")).toEqual(null);
-// });
+describe("Counter Testing", () => {
+  let wrapper;
 
-it.skip("renders without crashing", () => {
-  shallow(<App />);
-});
-
-it("renders Account header", () => {
-  const wrapper = shallow(<App />);
-  const header = <h1>Display Active Users Account Details</h1>;
-  expect(wrapper.contains(header)).toEqual(true);
-});
-
-const user = {
-  name: "Adeneye David",
-  email: "david@gmail.com",
-  username: "Dave",
-};
-describe("<Account />", () => {
-  it("accepts user account props", () => {
-    const wrapper = mount(<Account user={user} />);
-    expect(wrapper.props().user).toEqual(user);
-    wrapper.unmount();
+  beforeEach(() => {
+    wrapper = mount(<App />);
   });
-  it("contains users account email", () => {
-    const wrapper = mount(<Account user={user} />);
-    const value = wrapper.find("p").text();
-    expect(value).toEqual("david@gmail.com");
-    wrapper.unmount();
+
+  test("render the title of counter", () => {
+    expect(wrapper.find("h1").text()).toContain("This is a counter app");
+  });
+
+  test("render a button with text of `increment`", () => {
+    expect(wrapper.find("#increment-btn").text()).toBe("Increment");
+  });
+
+  test("render the initial value of state in a div", () => {
+    expect(wrapper.find("#counter-value").text()).toBe("0");
+  });
+
+  test("render the click event of increment button and increment counter value", () => {
+    wrapper.find("#increment-btn").simulate("click");
+    expect(wrapper.find("#counter-value").text()).toBe("1");
+  });
+
+  test("render the click event of decrement button and decrement counter value", () => {
+    wrapper.find("#increment-btn").simulate("click");
+    expect(wrapper.find("#counter-value").text()).toBe("1");
+    wrapper.find("#decrement-btn").simulate("click");
+    expect(wrapper.find("#counter-value").text()).toBe("0");
+  });
+
+  test("decrement button does not decrement counter value below 0", () => {
+    expect(wrapper.find("#counter-value").text()).toBe("0");
+    wrapper.find("#decrement-btn").simulate("click");
+    expect(wrapper.find("#counter-value").text()).toEqual("0");
   });
 });
-
-it("renders correctly", () => {
-  const tree = shallow(<App />);
-  expect(toJson(tree)).toMatchSnapshot();
-});
-
-// it("renders correctly with no error message", () => {
-//   const wrapper = mount(<App />);
-//   expect(wrapper.state("error")).toEqual(null);
-// });
-
-// it("renders welcome message", () => {
-//   const wrapper = shallow(<App />);
-//   const welcome = <h2>Welcome to React Testing</h2>;
-//   // expect(wrapper.contains(welcome)).toBe(true);
-//   expect(wrapper.contains(welcome)).toEqual(true);
-// });
-
-/* it("renders without crashing", () => {
-  const mockColor = "David";
-  const wrapper = shallow(<App color={mockColor} />);
-  expect(toJson(wrapper)).toMatchSnapshot();
-});
- */
-
-/* it("correctly increment the counter", () => {
-  const mockColor = "david";
-  const wrapper = shallow(<App color={mockColor} />);
-  wrapper.find('[id="counter"]').simulate("click");
-  wrapper.find('[id="counter"]').simulate("click");
-  expect(wrapper.state()).toEqual({ count: 3 });
-  //expect(wrapper.props().color).toEqual("david");
-}); */
